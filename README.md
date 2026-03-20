@@ -77,74 +77,6 @@ Print strongest rule and conclusion.
 ### 1,Milk,Bread,Butter
 ### 2,Milk,Bread,Jam
 ### 3,Bread,Butter,Cheese
-### 4,Milk,Bread,Butter,Eggs
-### 5,Bread,Butter,Cheese,Eggs
-### 6,Milk,Bread,Eggs
-### 7,Bread,Butter
-### 8,Milk,Bread,Butter,Jam
-### 9,Milk,Eggs
-### 10,Bread,Butter,Jam
-### 11,Milk,Bread,Butter,Cheese
-### 12,Milk,Bread,Jam,Eggs
-### 13,Bread,Butter,Cheese
-### 14,Milk,Bread,Butter,Eggs
-### 15,Milk,Bread,Butter,Jam
-### 16,Bread,Butter,Cheese,Eggs
-### 17,Milk,Bread,Butter
-### 18,Milk,Bread,Butter,Cheese
-### 19,Milk,Bread,Butter,Jam
-### 20,Bread,Butter,Eggs
-
-```Python
-import pandas as pd
-from itertools import combinations
-```
-
-### Step 1: Load Dataset
-```Python
-df = pd.read_csv('market.csv')
-transactions = df['Items'].apply(lambda x: x.split(','))
-
-print("Sample Transactions:")
-for i, t in enumerate(transactions[:5], 1):
-    print(f"Transaction {i}: {t}")
-```
-### Step 2: Define Minimum Support and Confidence
-```Python
-min_support = 0.3   # 30%
-min_confidence = 0.6
-```
-### Step 3: Generate All Possible Items
-```Python
-all_items = sorted({item for trans in transactions for item in trans})
-```
-### Step 4: Function to Calculate Support
-```Python
-def calculate_support(itemset):
-    count = sum(1 for trans in transactions if itemset.issubset(set(trans)))
-    return count / len(transactions)
-```
-### Step 5: Generate Frequent Itemsets
-```Python
-def apriori(transactions, min_support):
-    freq_itemsets = []
-    k = 1
-    current_itemsets = [frozenset([item]) for item in all_items]
-
-    while current_itemsets:
-        valid_itemsets = []
-        for itemset in current_itemsets:
-            support = calculate_support(itemset)
-            if support >= min_support:
-                valid_itemsets.append((itemset, support))
-                print(f"Frequent Itemset: {set(itemset)}, Support: {round(support,2)}")
-        freq_itemsets.extend(valid_itemsets)
-
-        # Generate next-level candidates
-        next_items = []
-        for i in range(len(valid_itemsets)):
-            for j in range(i+1, len(valid_itemsets)):
-                union = valid_itemsets[i][0] | valid_itemsets[j][0]
                 if len(union) == k + 1 and union not in next_items:
                     next_items.append(union)
         current_itemsets = next_items
@@ -197,3 +129,20 @@ if rules:
 else:
     print("\nNo strong rules found with the given thresholds.")
 ```
+
+### Output:
+
+<img width="922" height="137" alt="image" src="https://github.com/user-attachments/assets/841bef93-0559-4d7f-85b1-2f1cad46818c" />
+
+<img width="1005" height="482" alt="image" src="https://github.com/user-attachments/assets/d2b07545-d704-4b3e-abf2-20d153af6808" />
+
+<img width="1137" height="852" alt="image" src="https://github.com/user-attachments/assets/4418ac86-eee9-42c6-97e9-e8bd3e80894a" />
+
+<img width="874" height="437" alt="image" src="https://github.com/user-attachments/assets/7efc2f1d-a620-4170-8e18-794cbe8c78cc" />
+
+### Result:
+
+the Apriori Algorithm in Python using the dataset for identifying frequent itemsets and generating strong association rules based on minimum support and confidence thresholds implemented sucessfully.
+
+
+
