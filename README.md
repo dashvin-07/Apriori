@@ -1,3 +1,7 @@
+## Name :DASHVIN S
+
+## REG NO :212224100008
+
 # Apriori
 
 ## AIM
